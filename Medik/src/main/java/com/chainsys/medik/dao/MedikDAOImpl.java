@@ -24,7 +24,7 @@ public class MedikDAOImpl implements MedikDAO{
 	public User findUserByEmailAndPassword(String email, String password) {
 		String query = "SELECT * FROM user WHERE email = ? AND password = ?";
         Object[] params = {email, password};
-        return jdbcTemplate.queryForObject(query, params, new MedikDetailsMapper());
+        return jdbcTemplate.queryForObject(query,new MedikDetailsMapper(),params);
 	}
 	
 	 

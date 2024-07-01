@@ -1,6 +1,9 @@
 package com.chainsys.medik.controller;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.chainsys.medik.dao.MedikDAO;
 import com.chainsys.medik.model.User;
 
-import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class UserController {
@@ -43,18 +47,35 @@ public class UserController {
 	    }
 	 
 	 @PostMapping("/login")
-	    public String loginUser(@RequestParam("email") String email, 
-	                            @RequestParam("password") String password, 
-	                            Model model,HttpSession session) {
-	        User user = medikDAO.findUserByEmailAndPassword(email, password);
-	        if (user != null) {
-	        	session.setAttribute("email", user.getEmail());
-	            session.setAttribute("name", user.getUserName());
+	 public String loginUser(@RequestParam("email") String email, 
+	                         @RequestParam("password") String password, 
+	                         HttpSession session) {
 
-	            return "pharmacyHome.jsp";
-	        } else {
-	            return "pharmacyLogin.jsp";
-	        }
-	    }
+	     User user = medikDAO.findUserByEmailAndPassword(email, password);
+	     if (user != null) {
+	         session.setAttribute("email", user.getEmail());
+	         session.setAttribute("name", user.getUserName());
+
+	         if (email.endsWith("@medik.com")) {
+	        	 System.out.println("admin");
+	             return "redirect:/adminPage.jsp";
+	         } else {
+	             return "redirect:/pharmacyHome.jsp";
+	         }
+	     } else {
+	         return "pharmacyLogin.jsp";
+	     }
+	 }
+	 @RequestMapping("/logout")
+	 public String logoutUser(HttpSession session,HttpServletRequest request) {
+		 session = request.getSession(false);
+		 if (session != null) {
+				session.invalidate(); 
+			}
+
+		 
+		return "redirect:/pharmacyHome.jsp";
+		 
+	 }
 
 }

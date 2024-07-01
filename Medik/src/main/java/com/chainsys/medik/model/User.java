@@ -1,8 +1,6 @@
 package com.chainsys.medik.model;
 
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
 public class User {
 	private int id;
 	private String userName;

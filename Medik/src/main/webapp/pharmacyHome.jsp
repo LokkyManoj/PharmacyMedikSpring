@@ -260,7 +260,14 @@ a {
 </style>
 </head>
 <body>
-<%HttpSession session1= request.getSession(); %>
+<%
+if(session == null){
+response.sendRedirect("pharmacyLogin.jsp");	
+}
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
+response.setHeader("Pragma", "no-cache"); 
+response.setHeader("Expires", "0");
+HttpSession session1= request.getSession(); %>
     <form action="home">
         <header>
             <div class="logo-container">
@@ -272,7 +279,7 @@ a {
                     <% if (session.getAttribute("email") != null) { %>
                     <li><a href="#"><img src="images1/hello.png"
                             alt="HiIn Icon">Hello <%=session.getAttribute("name")%></a></li>
-                    <li><a href="LogoutServlet" class="logout-btn"><img
+                    <li><a href="logout" class="logout-btn"><img
                             src="images1/logout.png" alt="Logout Icon">Logout</a></li>
                     <% } else { %>
                     <li><a href="pharmacyReg.jsp"><img
