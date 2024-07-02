@@ -88,6 +88,16 @@ input::placeholder {
 	font-style: italic;
 	color: #aaa;
 }
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    background-color: #ffe6e6;
+    padding: 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+}
 </style>
 </head>
 <body>
@@ -117,7 +127,11 @@ input::placeholder {
 			<button type="submit">Sign In</button>
 			
 			
-		</form><br>
+		</form>
+		  <div class="error" style="display: ${not empty errorMessage ? 'block' : 'none'};">
+            ${errorMessage}
+        </div>
+		<br>
 		<form action="view" method="get">
 			<button type="submit">view users</button>
 			</form>

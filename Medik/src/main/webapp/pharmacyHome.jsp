@@ -264,10 +264,10 @@ a {
 if(session == null){
 response.sendRedirect("pharmacyLogin.jsp");	
 }
-response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
+/*  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
 response.setHeader("Pragma", "no-cache"); 
-response.setHeader("Expires", "0");
-HttpSession session1= request.getSession(); %>
+response.setHeader("Expires", "0"); */
+HttpSession session1= request.getSession();  %>
     <form action="home">
         <header>
             <div class="logo-container">

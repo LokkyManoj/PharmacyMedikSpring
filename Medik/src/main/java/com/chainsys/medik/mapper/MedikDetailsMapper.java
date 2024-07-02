@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.chainsys.medik.model.User;
 
 public class MedikDetailsMapper implements RowMapper<User> {
-
+	@Override
 	public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
 		User user= new User();

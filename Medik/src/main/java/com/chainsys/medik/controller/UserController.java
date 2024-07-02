@@ -33,6 +33,11 @@ public class UserController {
 	            @RequestParam("mobileNumber") String mobileNo, @RequestParam("email") String email,
 	            @RequestParam("password") String password, Model model)  {
 		 	System.out.println("click");
+		 	
+		 	  if (medikDAO.isUserExists(email)) {
+		            model.addAttribute("message", "User already exists");
+		            return "pharmacyReg.jsp"; 
+		        }
 	        User user = new User();
 	        user.setUserName(userName);
 	        user.setMobileNo(mobileNo);
@@ -40,8 +45,7 @@ public class UserController {
 	        user.setPassword(password);
 	        medikDAO.insertUser(user);
 
-//	        List<User> getDetails = medikDAO.listUsers();
-//	        model.addAttribute("users", getDetails);
+
 
 	        return "pharmacyLogin.jsp";
 	    }
@@ -49,7 +53,7 @@ public class UserController {
 	 @PostMapping("/login")
 	 public String loginUser(@RequestParam("email") String email, 
 	                         @RequestParam("password") String password, 
-	                         HttpSession session) {
+	                         HttpSession session,Model model) {
 
 	     User user = medikDAO.findUserByEmailAndPassword(email, password);
 	     if (user != null) {
@@ -63,6 +67,7 @@ public class UserController {
 	             return "redirect:/pharmacyHome.jsp";
 	         }
 	     } else {
+	    	 model.addAttribute("errorMessage", "Incorrect email or password");
 	         return "pharmacyLogin.jsp";
 	     }
 	 }

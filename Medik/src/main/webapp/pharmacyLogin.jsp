@@ -102,6 +102,16 @@
         margin-top: 5px;
          width: 95%;
     }
+    .error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    background-color: #ffe6e6;
+    padding: 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+}
     
 </style>
 </head>
@@ -120,7 +130,9 @@
             </div>
             <button type="submit">Login</button>
         </form>
-    </div>
+          <div class="error" style="display: ${not empty errorMessage ? 'block' : 'none'};">
+            ${errorMessage}
+        </div>    </div>
 </body>
 
 </html>
