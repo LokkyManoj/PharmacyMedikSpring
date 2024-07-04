@@ -304,7 +304,8 @@ HttpSession session1= request.getSession();  %>
 
                 <div>
                    <h4> Click here to search for medicines</h4>
-                    <button type="button" onclick="location.href='PharmacyMainServlet'">Search</button>
+                   <%session.getAttribute("id"); %>
+                    <button type="button" onclick="location.href='searchMedicine'">Search</button>
                  </div> 
             </div>
             <div class="browse">
@@ -312,19 +313,19 @@ HttpSession session1= request.getSession();  %>
             </div>
             <section class="category-cards">
                 <div class="card">
-                    <a href="PharmacyMainServlet1">
+                    <a href="skinCareProducts">
                         <img src="images1/skingirl2.jpg" alt="SkinCare">
                         <h3>Skin care</h3>
                     </a>
                 </div>
                 <div class="card">
-                    <a href="PharmacyMainServlet2">
+                    <a href="fitnessSupplements">
                         <img src="images1/healthyfit4.jpg" alt="HealthCare Devices">
                         <h3>Fitness Supplements</h3>
                     </a>
                 </div>
                 <div class="card">
-                    <a href="#">
+                    <a href="healthyProducts">
                         <img src="images1/healthfood.jpg" alt="Health Food and Drinks">
                         <h3>Healthy Food and Drinks</h3>
                     </a>

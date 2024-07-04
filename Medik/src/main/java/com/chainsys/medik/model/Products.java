@@ -1,6 +1,5 @@
 package com.chainsys.medik.model;
 
-import java.sql.Blob;
 import java.sql.Date;
 
 public class Products {

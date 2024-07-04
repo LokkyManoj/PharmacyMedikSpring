@@ -144,7 +144,7 @@ footer {
 </style>
 </head>
 <body>
-    <form action="login" method="post">
+    <form action="login" method="post" >
         <header>
 
             <div class="logo-container">
@@ -182,7 +182,7 @@ footer {
                 </div>
                 
                 <div class="card">
-                    <a href="ViewProductServlet"><img src="images1/pharmlogo2.png" alt="Add Product"></a>
+                    <a href="viewProducts"><img src="images1/pharmlogo2.png" alt="Add Product"></a>
                     <h3>View Products</h3>
                 </div>
                 

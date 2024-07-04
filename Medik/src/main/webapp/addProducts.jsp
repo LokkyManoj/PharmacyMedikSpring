@@ -152,6 +152,16 @@ a:hover {
     margin-left: -30px;
     margin-bottom: 20px;
 } 
+.error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    background-color: #ffe6e6;
+    padding: 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+}
     </style>
 </head>
 
@@ -163,7 +173,7 @@ a:hover {
                 <img src="images1/MedikLogo.png" alt="Medik Logo" class="logo1">
             </div>
             </header>
-        <form action="addProduct" method="post" >
+        <form action="addProduct" method="post" enctype="multipart/form-data">
     
         <label for="product_id">Product ID:</label>
         <input type="number" id="product_id" name="product_id" required min=1 placeholder="ProductId"><br><br>
@@ -173,17 +183,18 @@ a:hover {
 
         <label for="product_name">Product Name:</label>
         <input type="text" id="product_name" name="product_name" placeholder="ProductName" required><br><br>
+       
 
         <label for="product_image">Product Image:</label>
         <input type="file" id="product_image" name="product_image" accept="image/*" required><br><br>
 
         <label for="product_quantity">Product Quantity:</label>
         <input type="number" id="product_quantity" name="product_quantity" placeholder="ProductQuantity" required min=1><br><br>
+        
 
         <label for="product_price">Product Price:</label>
         <input type="number" id="product_price" name="product_price" placeholder="ProductPrice" required min=1><br><br>
-        
-        
+       
         
          <label for="mfd_date">Mfd Date:</label>
         <input type="date" id="mfd_date" name="mfd_date" ><br><br>

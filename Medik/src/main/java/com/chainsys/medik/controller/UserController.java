@@ -59,7 +59,8 @@ public class UserController {
 	     if (user != null) {
 	         session.setAttribute("email", user.getEmail());
 	         session.setAttribute("name", user.getUserName());
-
+	       session.setAttribute("id", user.getId());
+System.out.println("ID:"+user.getId());
 	         if (email.endsWith("@medik.com")) {
 	        	 System.out.println("admin");
 	             return "redirect:/adminPage.jsp";
