@@ -158,7 +158,7 @@ footer {
                     %>
                     <li><a href="#"><img src="images1/hii2.png"
                             alt="HiIn Icon">Hello <%=session.getAttribute("name")%></a></li>
-                    <li><a href="LogoutServlet" class="logout-btn"><img
+                    <li><a href="logout" class="logout-btn"><img
                             src="images1/logouticon.png" alt="Logout Icon">Logout</a></li>
                     <%
                     } else {

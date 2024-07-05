@@ -213,10 +213,18 @@ button:hover {
             </li>
             <li>
                 <div class="cart-icon" id="cart-icon">
-                    <a href="ViewCartServlet" style="text-decoration: none;">
-                        <img src="images1/carticon.png" alt="Cart Icon">
-                         <span class="cart-count"><%-- <%= session1.getAttribute("cartItemCount") != null ? session1.getAttribute("cartItemCount") : 0 %> --%></span>
-                    </a>
+                 <%
+        HttpSession session2 = request.getSession(false);
+        Integer userId = (Integer) session2.getAttribute("id");
+    %>
+    <form action="viewCart" method ="post">
+    <input type="hidden" name="user_id" value="<%= userId %>">
+     <button type="submit" style="background: none; border: none; padding: 0;">
+                   
+                        <img  src="images1/carticon.png" alt="Cart Icon">
+                         <span class="cart-count"><%= session1.getAttribute("cartItemCount") != null ? session1.getAttribute("cartItemCount") : 0 %> </span>
+                    </button>
+    </form>
                 </div>
             </li>
         </ul>

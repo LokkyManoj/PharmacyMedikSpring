@@ -287,7 +287,11 @@ HttpSession session1= request.getSession();  %>
                     <li><a href="pharmacyLogin.jsp"><img
                             src="images1/login.png" alt="LogIn Icon">LogIn</a></li>
                     <% } %>
-                    <li><a href="ViewCartServlet" style="text-decoration: none;" class="cart"><img
+                    
+                    
+                    <li>
+                    <a href="viewCart" style="text-decoration: none;" class="cart">
+                    <img
                             src="images1/carticon.png" alt="Cart Icon">Cart
                             <span class="cart-count"><%= session1.getAttribute("cartItemCount") != null ? session1.getAttribute("cartItemCount") : 0 %></span>
                              </a></li>
