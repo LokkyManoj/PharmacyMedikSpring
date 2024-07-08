@@ -294,7 +294,10 @@ HttpSession session1= request.getSession();  %>
                     <img
                             src="images1/carticon.png" alt="Cart Icon">Cart
                             <span class="cart-count"><%= session1.getAttribute("cartItemCount") != null ? session1.getAttribute("cartItemCount") : 0 %></span>
-                             </a></li>
+                             </a>
+                             
+                             </li>
+                             </form>
                 </ul>
             </nav>
         </header>

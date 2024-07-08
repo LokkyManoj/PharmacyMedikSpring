@@ -68,10 +68,11 @@ public class AdminController {
 	        product.setMfdDate(mfdDate);
 	        product.setExpDate(expDate);
 	        
-	        Validation validator = new Validation();
-	        if (!validator.validateProductForm(product, user, model)) {
-	            return "addProducts.jsp";
-	        }
+			/*
+			 * Validation validator = new Validation(); if
+			 * (!validator.validateProductForm(product, user, model)) { return
+			 * "addProducts.jsp"; }
+			 */
 
 	        if (medikDAO.addProduct(product)) {
 			    model.addAttribute("message", "Product added successfully!");

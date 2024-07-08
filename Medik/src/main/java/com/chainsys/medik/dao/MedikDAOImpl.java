@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.chainsys.medik.model.CartItem;
 import com.chainsys.medik.model.Orders;
+import com.chainsys.medik.model.Payment;
 import com.chainsys.medik.model.Products;
 import com.chainsys.medik.model.User;
 
@@ -119,7 +120,7 @@ public class MedikDAOImpl implements MedikDAO{
 	        return jdbcTemplate.queryForObject(sql, Integer.class,new Object[]{userId});
 	    }
 	@Override
-	 public boolean deleteCartItemsByUserId(int cartId) {
+	 public boolean deleteCartItemsByCartId(int cartId) {
 	        String sql = "DELETE FROM add_cart WHERE cart_id = ?";
 	        int rowsAffected = jdbcTemplate.update(sql, cartId);
 	        return rowsAffected > 0;
@@ -150,6 +151,31 @@ public class MedikDAOImpl implements MedikDAO{
 	            return false;
 	        }
 	    }
+	@Override
+	public boolean payment(Payment payment) {
+		String sql = "INSERT INTO payment (payment_date, payment_method, amount, id, product_id) VALUES (?, ?, ?, ?, ?)";
+	    Object[] params = { 
+	        payment.getPaymentDate(), 
+	        payment.getPaymentMethod(), 
+	        payment.getAmount(), 
+	        payment.getUserId(), 
+	        payment.getProductId() 
+	    };
+	    int rowsAffected = jdbcTemplate.update(sql, params);
+	    return rowsAffected > 0;
+	}
+	@Override
+	public boolean updateProductQuantity(int productId, int newQuantity) {
+		 String query = "UPDATE pharmacy_admin SET product_quantity = ? WHERE product_id = ?";
+	        int rowsUpdated = jdbcTemplate.update(query, newQuantity, productId);
+	        return rowsUpdated > 0;	
+	        }
+	@Override
+	public boolean deleteCartItemsByUserId(int userId) {
+		String sql = "DELETE FROM add_cart WHERE id = ?";
+        int rowsAffected = jdbcTemplate.update(sql, userId);
+        return rowsAffected > 0;	
+        }
 
 }
 

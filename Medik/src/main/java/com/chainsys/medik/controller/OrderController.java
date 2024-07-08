@@ -53,7 +53,7 @@ public class OrderController {
 	                         @RequestParam("orderDate") Date orderDate,
 	                         @RequestParam("expectedDeliveryDate") Date expectedDeliveryDate,
 	                         @RequestParam("address") String address,
-	                         RedirectAttributes redirectAttributes) {
+	                         RedirectAttributes redirectAttributes,HttpSession session) {
 	    Orders order = new Orders();
 	    order.setProductId(productId);
 	    order.setUserId(userId);
@@ -62,12 +62,13 @@ public class OrderController {
 	    order.setOrderDate(orderDate);
 	    order.setExpectedDeliveryDate(expectedDeliveryDate);
 	    order.setAddress(address);
+	    session.setAttribute("address", order.getAddress());
 
 	    boolean isOrderPlaced = medikDAO.placeOrder(order);
 
 	    if (isOrderPlaced) {
 	        redirectAttributes.addFlashAttribute("message", "Order placed successfully!");
-	        return "pharmacyHome.jsp"; 
+	        return "paymentView.jsp"; 
 	    } else {
 	        redirectAttributes.addFlashAttribute("error", "Failed to place order. Please try again.");
 	        return "redirect:/orderFailure";

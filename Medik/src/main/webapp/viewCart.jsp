@@ -2,6 +2,8 @@
 <%@ page import="java.util.Base64"%>
 <%@ page import="java.util.List"%>
 <%@ page import ="com.chainsys.medik.model.CartItem"%>
+<%@ page import ="com.chainsys.medik.model.Products"%>
+
 <%-- <%@ page import ="com.chainsys.medik.model.Order"%>
  --%>
 
@@ -150,11 +152,23 @@
   <% int total = 0; %>
   <%int totalQuantity=0; %>
   <%HttpSession session1= request.getSession(); %>
+  <% Products product = new Products();%>
 </head>
 <body>
     <a href="searchMedicine" class="back-icon"><i class='bx bx-arrow-back'></i></a>
 
     <h2>Your Cart</h2>
+     <% 
+    String expiryMessage = (String) session1.getAttribute("expiryMessage");
+    if (expiryMessage != null) {
+%>
+    <div class="expiry-message" style="color: red; text-align: center;">
+        <p><%= expiryMessage %></p>
+    </div>
+<% 
+    }
+%>
+    
     <div class="container">
         <%   
 /*         Order order = new Order();
@@ -164,6 +178,7 @@
         %>
         <div class="product-card">
             <h3><%= item.getProductName() %></h3>
+            
             <% if (item.getProductImage() != null) { %>
                 <img src="data:image/jpeg;base64,<%= Base64.getEncoder().encodeToString(item.getProductImage()) %>" alt="<%= item.getProductName() %>">
             <% } %>
@@ -188,6 +203,13 @@
                 <input type="hidden" value= <%= total += (item.getProductPrice() * item.getQuantity()) %> >
 <%--                 <%=session.setAttribute("total", total)%>
  --%>                <p><strong>Total Price:</strong> Rs.<%= item.getProductPrice() * item.getQuantity() %></p>
+   <% 
+                    // Check for expiry message and display if present
+                    String itemExpiryMessage = (String) session1.getAttribute("expiryMessage");
+                    if (itemExpiryMessage != null && !itemExpiryMessage.isEmpty()) { 
+                %>
+                <p class="expiry-message" style="color: red; text-align: center;" ><%= itemExpiryMessage %></p>
+                <% } %>
             </div> 
             <div class="product-actions">
                 <form action="placeOrder" method="post">

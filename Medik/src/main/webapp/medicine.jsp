@@ -206,7 +206,7 @@ button:hover {
         <ul>
             <li>
                 <div class="home-icon" id="home-icon">
-                    <a href="PharmacyHome.jsp" style="text-decoration: none;">
+                    <a href="pharmacyHome.jsp" style="text-decoration: none;">
                         <img src="images1/homeicon1.png" alt="Home Icon">
                     </a>
                 </div>
@@ -271,6 +271,7 @@ button:hover {
                     <input type="hidden" name="product_id" value="<%=product.getProductId()%>">
                     <input type="hidden" name="user_id" value="<%=id%>">
                     <input type="number" name="quantity" min="1" max="<%=product.getProductQuantity()%>" value="1">
+                    
                     <button type="submit">Add to Cart</button>
                 </form>
             </div>

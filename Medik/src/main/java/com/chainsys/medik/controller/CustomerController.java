@@ -1,6 +1,10 @@
 package com.chainsys.medik.controller;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,20 +64,42 @@ public class CustomerController {
     }
 	
 	@PostMapping("/addToCart")
-    public String addToCart(@RequestParam("user_id") int userId,
-                            @RequestParam("product_id") int productId,
-                            @RequestParam("quantity") int quantity,
-                            Model model,HttpSession session) throws SQLException {
-        if (medikDAO.addToCart(userId, productId, quantity)) {
-            model.addAttribute("message", "Product added to cart successfully!");
-        } else {
-            model.addAttribute("message", "Failed to add product to cart.");
-        }
-        int cartItemCount = medikDAO.getCartItemCount(userId);
-        session.setAttribute("cartItemCount",cartItemCount);
+	public String addToCart(@RequestParam("user_id") int userId,
+	                        @RequestParam("product_id") int productId,
+	                        @RequestParam("quantity") int quantity,
+	                        Model model, HttpSession session) throws SQLException {
+	    Products product = medikDAO.findProductById(productId);
+	    int remainingDays = getRemainingDays(product.getExpDate());
+	    String productName=product.getProductName();
+	    
+	    if (medikDAO.addToCart(userId, productId, quantity)) {
+	        model.addAttribute("message", "Product added to cart successfully!");
+	    } else {
+	        model.addAttribute("message", "Failed to add product to cart.");
+	    }
+	    int cartItemCount = medikDAO.getCartItemCount(userId);
+	    session.setAttribute("cartItemCount", cartItemCount);
 
-        return "redirect:/searchMedicine"; 
-    }
+	    // Add remaining days to the session
+	    if (remainingDays <= 45) {
+	        session.setAttribute("expiryMessage","" +productName+" will expire in " + remainingDays + " days.");
+	    } else {
+	        session.removeAttribute("expiryMessage");
+	    }
+
+	    return "redirect:/searchMedicine";
+	}
+
+	private int getRemainingDays(java.sql.Date sqlExpDate) {
+	    // Convert java.sql.Date to java.util.Date
+	    java.util.Date utilExpDate = new java.util.Date(sqlExpDate.getTime());
+	    
+	    // Convert java.util.Date to LocalDate
+	    LocalDate expiryDate = utilExpDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+	    LocalDate currentDate = LocalDate.now();
+	    return (int) ChronoUnit.DAYS.between(currentDate, expiryDate);
+	}
 	
 	 @PostMapping("/viewCart")
 	    public String viewCart(@RequestParam(value = "user_id",defaultValue = "0") int userId, HttpServletRequest request,HttpSession session,Model model) throws SQLException {
@@ -85,8 +111,8 @@ public class CustomerController {
 	    }
 	 
 	 @PostMapping("/deleteCartItems")
-	    public String deleteCartItemsByUserId(@RequestParam("user_id") int userId, @RequestParam("cart_id") int cartId, Model model,HttpServletRequest request) {
-	        boolean isDeleted = medikDAO.deleteCartItemsByUserId(cartId);
+	    public String deleteCartItemsByCartId(@RequestParam("user_id") int userId, @RequestParam("cart_id") int cartId, Model model,HttpServletRequest request) {
+	        boolean isDeleted = medikDAO.deleteCartItemsByCartId(cartId);
 	        if (isDeleted) {
 	            model.addAttribute("message", "Cart items deleted successfully.");
 	            List<CartItem> cartItems = medikDAO.getCartItemsByUserId(userId, request);
@@ -97,6 +123,32 @@ public class CustomerController {
 	            return "error"; 
 	        } 
 	 }
+	 
+//	 @PostMapping("/deleteCartItems")
+//	 public String deleteCartItemsByCartId(@RequestParam("user_id") int userId, 
+//	                                       @RequestParam("cart_id") int cartId, 
+//	                                       Model model,
+//	                                       HttpServletRequest request,
+//	                                       HttpSession session) {
+//	     boolean isDeleted = medikDAO.deleteCartItemsByCartId(cartId);
+//	     if (isDeleted) {
+//	         model.addAttribute("message", "Cart items deleted successfully.");
+//	         
+//	         // Remove expiry message if the deleted cart item caused it
+//	         CartItem deletedItem = medikDAO.getCartItemByCartId(cartId); // Assuming this method retrieves the cart item
+//	         if (deletedItem != null && deletedItem.isExpiryMessageEnabled()) {
+//	             session.removeAttribute("expiryMessage");
+//	         }
+//	         
+//	         List<CartItem> cartItems = medikDAO.getCartItemsByUserId(userId, request);
+//	         model.addAttribute("cartItems", cartItems);
+//	         
+//	         return "viewCart"; 
+//	     } else {
+//	         model.addAttribute("message", "Failed to delete cart items.");
+//	         return "error"; 
+//	     } 
+//	 }
 	 
 	 @PostMapping("/updateCartQuantity")
 	 public String updateCartQuantity(@RequestParam("cartId") int cartId, 
@@ -110,9 +162,6 @@ public class CustomerController {
 	     } else {
 	         redirectAttributes.addFlashAttribute("message", "Failed to update cart quantity.");
 	     }
-	     
-	     //List<CartItem> cartItems = medikDAO.getCartItemsByUserId(userId, request);
-	        //model.addAttribute("cartItems", cartItems);
 	        return "viewCart"; 
 	 }
 

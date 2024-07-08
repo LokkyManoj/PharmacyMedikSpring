@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.chainsys.medik.model.CartItem;
 import com.chainsys.medik.model.Orders;
+import com.chainsys.medik.model.Payment;
 import com.chainsys.medik.model.Products;
 import com.chainsys.medik.model.User;
 
@@ -27,7 +28,10 @@ public interface MedikDAO {
 	 public boolean addToCart(int userId, int productId, int quantity);
 	 public List<CartItem> getCartItemsByUserId(int userId, HttpServletRequest request);
 	 public int getCartItemCount(int userId);
-	 public boolean deleteCartItemsByUserId(int cartId);
+	 public boolean deleteCartItemsByCartId(int cartId);
 	 public boolean updateCartQuantity(int cartId,int quantity);
 	 public boolean placeOrder(Orders order);
+	 public boolean payment(Payment payment);
+	 public boolean updateProductQuantity(int productId, int newQuantity);
+	 public boolean deleteCartItemsByUserId(int userId);
 }
