@@ -89,6 +89,7 @@
             transition: 0.5s;
             padding-top: 60px;
             box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            
         }
 
         .sidebar div {
@@ -216,8 +217,8 @@
                 <input type="text" id="nameOnCard" name="nameOnCard" placeholder="e.g.Manoj Kumar" required>
             </div>
             <div>
-            <form action="PlaceOrderAndDeleteCartServlet" method="get">
-            <button type="submit" class="submitBtn"><%= session.getAttribute("total") %></button>
+            <form action="continueOrder" method="post">
+            <button type="submit" class="submitBtn">Pay Rs.<%= session.getAttribute("total") %></button>
             </form>
             </div>
         </div>
@@ -232,8 +233,8 @@
                 <input type="text" id="upiId" name="upiId" placeholder="Enter your UPI ID" required>
             </div>
             <div>
-            <form action="PlaceOrderAndDeleteCartServlet" method="get">
-                <button type="submit" class="submitBtn"><%= session.getAttribute("total") %></button>
+            <form action="continueOrder" method="post">
+                <button type="submit" class="submitBtn">Pay Rs.<%= session.getAttribute("total") %></button>
                 </form>
             </div>
         </div>

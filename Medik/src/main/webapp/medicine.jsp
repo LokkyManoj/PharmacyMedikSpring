@@ -250,8 +250,8 @@ button:hover {
         <div class="product-info">
             <p><strong>Price:</strong> Rs.<%=product.getProductPrice()%></p>
             <p><strong>Description:</strong> <%=product.getDescription()%></p>
-            <p><strong>MFD Date:</strong><%=product.getMfdDate() %></p>
-            <p><strong>EXP Date:</strong><%=product.getExpDate() %></p>
+<%--             <p><strong>MFD Date:</strong><%=product.getMfdDate() %></p>
+<%--  --%>            <p><strong>EXP Date:</strong><%=product.getExpDate() %></p>
             <table>
                 <tr>
                     <th>Uses</th>

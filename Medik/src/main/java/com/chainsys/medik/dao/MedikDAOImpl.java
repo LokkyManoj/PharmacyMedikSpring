@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.chainsys.medik.model.CartItem;
+import com.chainsys.medik.model.Coupon;
 import com.chainsys.medik.model.Orders;
 import com.chainsys.medik.model.Payment;
 import com.chainsys.medik.model.Products;
@@ -18,6 +19,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import com.chainsys.medik.mapper.CartItemRowMapper;
 import com.chainsys.medik.mapper.MedikDetailsMapper;
 import com.chainsys.medik.mapper.ProductsMapper;
+import com.chainsys.medik.mapper.CouponMapper;
+
 
 
 @Repository
@@ -107,10 +110,10 @@ public class MedikDAOImpl implements MedikDAO{
 		}
 	@Override
 	 public List<CartItem> getCartItemsByUserId(int userId, HttpServletRequest request) {
-	        String sql = "SELECT c.cart_id, a.product_id, a.product_name, a.product_price, a.product_image, c.quantity " +
-	                     "FROM pharmacy_admin a " +
-	                     "JOIN add_cart c ON a.product_id = c.product_id " +
-	                     "WHERE c.id = ?";
+		String sql = "SELECT c.cart_id, a.product_id, a.product_name, a.product_price, a.product_image, c.quantity, a.exp_date " +
+                "FROM pharmacy_admin a " +
+                "JOIN add_cart c ON a.product_id = c.product_id " +
+                "WHERE id = ?";
 
 	        return jdbcTemplate.query(sql,  new CartItemRowMapper(request),new Object[]{userId});
 	    }
@@ -176,6 +179,31 @@ public class MedikDAOImpl implements MedikDAO{
         int rowsAffected = jdbcTemplate.update(sql, userId);
         return rowsAffected > 0;	
         }
+	@Override
+	public List<Products> getExpiredProducts() {
+		String sql = "SELECT * FROM pharmacy_admin WHERE exp_date < CURRENT_DATE() AND is_deleted = 0";
+	    return jdbcTemplate.query(sql, new ProductsMapper());
+	}
+	@Override
+	public boolean addCoupon(Coupon coupon) {
+		String sql = "INSERT INTO coupon (coupon_code,discount,validity) VALUES (?, ?, ?)";
+        Object[] params = { coupon.getCouponCode(),coupon.getDiscount(),coupon.getValidity()
+           
+        };
+        int row = jdbcTemplate.update(sql, params);
+        return row > 0;
+	}
+	@Override
+	public List<Coupon> viewCoupons() {
+		String sql = "SELECT * FROM coupon";
+        
+        return jdbcTemplate.query(sql, new CouponMapper());
+	}
+	@Override
+	public Coupon getCouponByCode(String couponCode) {
+		 String sql = "SELECT * FROM coupon WHERE coupon_code = ?";
+	        return jdbcTemplate.queryForObject(sql,new CouponMapper(),new Object[] { couponCode });
+	}
 
 }
 

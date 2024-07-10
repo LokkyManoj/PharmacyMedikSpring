@@ -1,5 +1,6 @@
 package com.chainsys.medik.mapper;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -31,8 +32,9 @@ public class CartItemRowMapper implements RowMapper<CartItem> {
         int productPrice = rs.getInt("product_price");
         byte[] productImage = rs.getBytes("product_image");
         int quantity = rs.getInt("quantity");
+        Date expDate=rs.getDate("exp_date");
 
-        return new CartItem(productId, productName, productPrice, productImage, quantity, cartId);
+        return new CartItem(productId, productName, productPrice, productImage, quantity, cartId,expDate);
 
 	}
 

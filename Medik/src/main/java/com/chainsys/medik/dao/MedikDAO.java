@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.chainsys.medik.model.CartItem;
+import com.chainsys.medik.model.Coupon;
 import com.chainsys.medik.model.Orders;
 import com.chainsys.medik.model.Payment;
 import com.chainsys.medik.model.Products;
@@ -34,4 +35,8 @@ public interface MedikDAO {
 	 public boolean payment(Payment payment);
 	 public boolean updateProductQuantity(int productId, int newQuantity);
 	 public boolean deleteCartItemsByUserId(int userId);
+	 public List<Products> getExpiredProducts();
+	 public boolean addCoupon(Coupon coupon);
+	 public List<Coupon> viewCoupons();
+	 public Coupon getCouponByCode(String couponCode);
 }

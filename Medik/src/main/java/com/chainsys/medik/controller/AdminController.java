@@ -142,6 +142,11 @@ public class AdminController {
 		        return "redirect:/viewProducts";
 		 }
 		 
-
+		 @GetMapping("/expiredProducts")
+		    public String viewExpiredProducts(Model model) {
+		        List<Products> expiredProducts = medikDAO.getExpiredProducts();
+		        model.addAttribute("expiredProducts", expiredProducts);
+		        return "expiredProducts.jsp"; 
+		    }
 }
 

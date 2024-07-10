@@ -17,12 +17,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.chainsys.medik.dao.MedikDAO;
 import com.chainsys.medik.model.CartItem;
+import com.chainsys.medik.model.Coupon;
 import com.chainsys.medik.model.Products;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-@Controller
+@Controller("customerController")
 public class CustomerController {
 	@Autowired
 	MedikDAO medikDAO;
@@ -69,7 +70,7 @@ public class CustomerController {
 	                        @RequestParam("quantity") int quantity,
 	                        Model model, HttpSession session) throws SQLException {
 	    Products product = medikDAO.findProductById(productId);
-	    int remainingDays = getRemainingDays(product.getExpDate());
+//	    int remainingDays = getRemainingDays(product.getExpDate());
 	    String productName=product.getProductName();
 	    
 	    if (medikDAO.addToCart(userId, productId, quantity)) {
@@ -81,32 +82,34 @@ public class CustomerController {
 	    session.setAttribute("cartItemCount", cartItemCount);
 
 	    // Add remaining days to the session
-	    if (remainingDays <= 45) {
-	        session.setAttribute("expiryMessage","" +productName+" will expire in " + remainingDays + " days.");
-	    } else {
-	        session.removeAttribute("expiryMessage");
-	    }
+		/*
+		 * if (remainingDays <= 45) { session.setAttribute("expiryMessage",""
+		 * +productName+" will expire in " + remainingDays + " days."); } else {
+		 * session.removeAttribute("expiryMessage"); }
+		 */
 
 	    return "redirect:/searchMedicine";
 	}
 
-	private int getRemainingDays(java.sql.Date sqlExpDate) {
-	    // Convert java.sql.Date to java.util.Date
-	    java.util.Date utilExpDate = new java.util.Date(sqlExpDate.getTime());
+	public int getRemainingDays(java.sql.Date sqlExpDate) {
+	    java.util.Date expDate = new java.util.Date(sqlExpDate.getTime());
 	    
-	    // Convert java.util.Date to LocalDate
-	    LocalDate expiryDate = utilExpDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	    LocalDate expiryDate = expDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
 	    LocalDate currentDate = LocalDate.now();
 	    return (int) ChronoUnit.DAYS.between(currentDate, expiryDate);
 	}
 	
+	
+	
 	 @PostMapping("/viewCart")
 	    public String viewCart(@RequestParam(value = "user_id",defaultValue = "0") int userId, HttpServletRequest request,HttpSession session,Model model) throws SQLException {
-		 System.out.println("eeeeeee");
 		 userId=(int) session.getAttribute("id");
+		 System.out.println(userId);
 	        List<CartItem> cartItems = medikDAO.getCartItemsByUserId(userId, request);
 	        model.addAttribute("cartItems", cartItems);
+	        List<Coupon> getDetails = medikDAO.viewCoupons();
+	        model.addAttribute("coupons", getDetails);
 	        return "viewCart.jsp"; 
 	    }
 	 

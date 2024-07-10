@@ -156,7 +156,7 @@ footer {
                     <%
                     if (session.getAttribute("email") != null) {
                     %>
-                    <li><a href="#"><img src="images1/hii2.png"
+                    <li><a href="#"><img src="images1/hello.png"
                             alt="HiIn Icon">Hello <%=session.getAttribute("name")%></a></li>
                     <li><a href="logout" class="logout-btn"><img
                             src="images1/logouticon.png" alt="Logout Icon">Logout</a></li>
@@ -165,7 +165,7 @@ footer {
                     %>
                     <li><a href="PharmacyReg.jsp"><img
                             src="images1/Registericon2.png" alt="SignIn Icon">SignUp</a></li>
-                    <li><a href="PharmacyLogin.jsp"><img
+                    <li><a href="pharmacyLogin.jsp"><img
                             src="images1/Loginicon2.png" alt="LogIn Icon">LogIn</a></li>
                     <%
                     }
@@ -186,9 +186,25 @@ footer {
                     <h3>View Products</h3>
                 </div>
                 
+                 <div class="card">
+                    <a href="expiredProducts"><img src="images1/pharmlogo2.png" alt="Add Product"></a>
+                    <h3>Expired Products</h3>
+                </div>
+                
               
             </div>
+            
         </main>
     </form>
+    
+    <form action="addCoupon" method="post">
+    
+            <button type="submit" value="Add Coupon"><a href="addCoupon.jsp">Add Coupon</a></button>
+            </form>
+            
+             <form action="click" method="post">
+    
+            <button type="submit">view Coupon</button>
+            </form>
 </body>
 </html>
