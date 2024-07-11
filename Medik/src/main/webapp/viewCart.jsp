@@ -157,18 +157,18 @@
        .sidebar {
     position: fixed;
     top: 0;
-    right: -400px; /* Start hidden off-screen */
+    right: -400px; 
     width: 400px;
     height: 100%;
     background-color: #fff;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
     transition: right 0.3s ease;
     z-index: 1000;
-    overflow-y: auto; /* Enable scrolling if content exceeds height */
+    overflow-y: auto; 
 }
 
 .sidebar.open {
-    right: 0; /* Slide in when open */
+    right: 0; 
 }
 
 .sidebar-content {
@@ -183,21 +183,21 @@
     font-size: 20px;
 }
 
-/* Coupon CSS */
+
 .coupon {
-    width: 100%; /* Adjust width to fit sidebar */
-    height: auto; /* Adjust height accordingly */
+    width: 100%; 
+    height: auto; 
     border-radius: 10px;
     overflow: hidden;
     margin: auto;
     filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.5));
-    position: relative; /* Adjust positioning as needed */
+    position: relative;
     text-transform: uppercase;
     background: #fff;
     padding: 20px;
     box-sizing: border-box;
     border: 1px solid #ccc;
-    margin-bottom: 20px; /* Optional: Add margin to separate from other content */
+    margin-bottom: 20px;
 }
 
 .coupon::before,
@@ -252,16 +252,14 @@
     </style>
 
     <script>
-    // Function to toggle sidebar visibility
     function toggleSidebar() {
         var sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('open'); // Toggle the 'open' class to show/hide sidebar
+        sidebar.classList.toggle('open'); 
     }
 
-    // Function to close sidebar
     function closeSidebar() {
         var sidebar = document.getElementById('sidebar');
-        sidebar.classList.remove('open'); // Remove the 'open' class to hide sidebar
+        sidebar.classList.remove('open'); 
     }
 </script>
 
@@ -314,7 +312,7 @@
                 <input type="hidden" value= <%= total += (item.getProductPrice() * item.getQuantity()) %> >
                 <p><strong>Total Price:</strong> Rs.<%= item.getProductPrice() * item.getQuantity() %></p>
 
-                <% // Check for expiry message and display if present
+                <% 
                     String itemExpiryMessage = (String) session1.getAttribute("expiryMessage");
                     if (itemExpiryMessage != null && !itemExpiryMessage.isEmpty()) {
                 %>
@@ -383,13 +381,10 @@
     </form>
     </div>
 
-    <!-- Apply Coupon Button -->
     
 
-    <!-- Coupon HTML (hidden by default) -->
     <div id="sidebar" class="sidebar">
     <div class="sidebar-content">
-        <!-- Coupon HTML -->
         <%
     List<Coupon> coupons = (List<Coupon>) request.getAttribute("coupons");
     if (coupons != null && !coupons.isEmpty()) {
@@ -416,7 +411,6 @@
     <%
         }
     %>
-        <!-- End Coupon HTML -->
         
         <div class="container">
         <form action="applyCoupon" method="post">

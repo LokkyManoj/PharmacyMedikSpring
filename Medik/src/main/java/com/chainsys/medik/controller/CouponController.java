@@ -48,9 +48,8 @@ public class CouponController {
 	    public String applyCoupon(@ModelAttribute("couponCode") String couponCode, Model model,HttpSession session) {
 	        Coupon coupon = medikDAO.getCouponByCode(couponCode);
 	        if (coupon != null) {
-	            // Calculate new total amount after applying discount
-	            // Assuming total is stored in session or fetched from service
-	            int currentTotal = (int) session.getAttribute("total"); // Replace with actual current total
+	            
+	            int currentTotal = (int) session.getAttribute("total"); 
 	            int discount = coupon.getDiscount();
 	            int newTotal = currentTotal - (currentTotal * discount / 100);
 	            System.out.println("CurrentTotal: "+currentTotal);
@@ -60,7 +59,7 @@ public class CouponController {
 	        } else {
 	            model.addAttribute("couponError", "Invalid coupon code");
 	        }
-	        return "viewCart"; // Replace with actual view name
+	        return "viewCart"; 
 	    }
 
 }

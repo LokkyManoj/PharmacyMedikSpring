@@ -81,7 +81,6 @@ public class CustomerController {
 	    int cartItemCount = medikDAO.getCartItemCount(userId);
 	    session.setAttribute("cartItemCount", cartItemCount);
 
-	    // Add remaining days to the session
 		/*
 		 * if (remainingDays <= 45) { session.setAttribute("expiryMessage",""
 		 * +productName+" will expire in " + remainingDays + " days."); } else {
