@@ -1,6 +1,9 @@
 package com.chainsys.medik.controller;
 
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,9 +60,16 @@ public class UserController {
 
 	     User user = medikDAO.findUserByEmailAndPassword(email, password);
 	     if (user != null) {
+	    	 
 	         session.setAttribute("email", user.getEmail());
 	         session.setAttribute("name", user.getUserName());
 	       session.setAttribute("id", user.getId());
+	      session.setAttribute("loginDate",LocalDate.now());
+	      
+	     LocalDate loginDate= (LocalDate)session.getAttribute("loginDate");
+	     System.out.println("LoginDate for User :"+loginDate);
+	     
+	      
 System.out.println("ID:"+user.getId());
 	         if (email.endsWith("@medik.com")) {
 	        	 System.out.println("admin");
@@ -72,6 +82,8 @@ System.out.println("ID:"+user.getId());
 	         return "pharmacyLogin.jsp";
 	     }
 	 }
+	 
+	 
 	 @RequestMapping("/logout")
 	 public String logoutUser(HttpSession session,HttpServletRequest request) {
 		 session = request.getSession(false);

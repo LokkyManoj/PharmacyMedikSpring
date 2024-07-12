@@ -361,10 +361,19 @@
     </center>
     
     <%}else{ %> 
+     <% session.removeAttribute("newTotal1"); %>
      <center>
         <p>Total Amount: Rs.<%= total %></p>
     </center>
    <%} %>
+   
+ <% 
+String couponError = (String) request.getAttribute("couponError1");
+if (couponError != null) { %>
+    <div style="color: red; text-align: center;">
+        <p><%= couponError %></p>
+    </div>
+<% } %>
 
     <div class="product-actions" style="text-align: center;">
         <form action="placeOrder" method="get">
@@ -376,7 +385,7 @@
             <input type="hidden" name="total" value="<%= session.getAttribute("total") %>">
             <button type="submit">Buy Now</button>
         </form>
-        <form action="click1" method="post">
+        <form action="click" method="post">
     <button type="button" onclick="toggleSidebar()">Apply Coupon</button>
     </form>
     </div>
@@ -396,9 +405,11 @@
             </div>
             <div class="center">
                 <div>
+                
                     <h2><%= coupon.getDiscount() %>% OFF</h2>
                     <h3>Coupon Code :<%= coupon.getCouponCode() %></h3>
-                    <small>Valid until <%= coupon.getValidity() %></small>
+                    <small> For above Rs:<%= coupon.getMinAmount() %> </small>
+                    <small> <%= coupon.getDaysLeft() %> days left</small>
                 </div>
             </div>
             

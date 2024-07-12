@@ -1,3 +1,5 @@
+<%@ page import="com.chainsys.medik.model.Coupon"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -151,11 +153,18 @@
 </head>
 <body>
     <form action="continueOrder" method="post">
+    <%Coupon coupon=(Coupon) session.getAttribute("couponCode");%>
         <div>
             <label for="amount">Amount:</label>
-            
+             <%String newAmount=(String) session.getAttribute("newTotal1");%>
+              <%if(newAmount!=null){ %>
+              <input type="text" id="amount" name="amountDisplay" value="<%=newAmount  %>" readonly>
+            <input type="hidden" id="amountHidden" name="amount" value="<%= newAmount %>">
+              <%}else{ %> 
+             
             <input type="text" id="amount" name="amountDisplay" value="<%= session.getAttribute("total") %>" readonly>
             <input type="hidden" id="amountHidden" name="amount" value="<%= session.getAttribute("total") %>">
+            <%} %>
         </div>
         <div>
             <label for="expectedDeliveryDate">Expected Delivery Date:</label>
@@ -186,7 +195,14 @@
                     <input type="hidden"  name="user_id" value="<%= session.getAttribute("id") %>">
                     <input type="hidden"  name="product_id" value="<%= session.getAttribute("product_id") %>">
                             <input type="hidden"  name="quantity" value="<%= session.getAttribute("quantity") %>">
-        
+                            
+                                     <% if (coupon != null) { %>
+            <input type="text" name="couponId" value="<%= coupon.getCouponId() %>">
+        <% } else { %>
+            <input type="text" name="couponId" value="0">
+        <% } %>
+                                     
+         
             <button type="submit" name="action" value="placeOrder">Continue</button>
         </div>
     </form>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.chainsys.medik.dao.MedikDAO;
+import com.chainsys.medik.model.Coupon;
 import com.chainsys.medik.model.Orders;
 
 import jakarta.servlet.http.HttpSession;
@@ -36,6 +37,8 @@ public class OrderController {
         int userId = (int) session.getAttribute("id");
         int quantity = (int) session.getAttribute("quantity");
         int total = (int) session.getAttribute("total");
+     
+        
         System.out.println("userID"+userId);
         System.out.println("quantity"+quantity);
         System.out.println("total"+total);
@@ -43,6 +46,8 @@ public class OrderController {
 
         return "order.jsp";
     }
+	
+	
 
 	@PostMapping("/order")
 	public String placeOrder(@RequestParam("total") int total,

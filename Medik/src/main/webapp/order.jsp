@@ -98,8 +98,18 @@
                 <span><%=  session.getAttribute("totalQuantity") %></span>
             </div>
             <div class="order-item">
+<%--             <input type="hidden" name="couponCode" value="<%=session.getAttribute("couponCode")%>">
+ --%>            <%String newAmount=(String) session.getAttribute("newTotal1");%>
+            <%if(newAmount!=null){ %>
+              <label>Total Price:</label>
+                <span><%= newAmount%></span>
+            
+               <%}else{%> 
+            	       <% session.removeAttribute("newTotal1"); %>
+            	   
                 <label>Total Price:</label>
                 <span><%=session.getAttribute("total") %></span>
+                   <%} %>
             </div>
         </div>
         <form action="order" method="post">

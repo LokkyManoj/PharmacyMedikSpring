@@ -104,11 +104,24 @@ public class CustomerController {
 	 @PostMapping("/viewCart")
 	    public String viewCart(@RequestParam(value = "user_id",defaultValue = "0") int userId, HttpServletRequest request,HttpSession session,Model model) throws SQLException {
 		 userId=(int) session.getAttribute("id");
-		 System.out.println(userId);
 	        List<CartItem> cartItems = medikDAO.getCartItemsByUserId(userId, request);
 	        model.addAttribute("cartItems", cartItems);
-	        List<Coupon> getDetails = medikDAO.viewCoupons();
-	        model.addAttribute("coupons", getDetails);
+	        
+			 LocalDate loginDate = (LocalDate) session.getAttribute("loginDate");
+			 if (loginDate == null) {
+		            return "redirect:/pharmacyLogin";
+		        }
+		        
+//	        List<Coupon> getDetails = medikDAO.viewCoupons();
+	        List<Coupon> availableCoupons = medikDAO.getAvailableCouponsForUser(userId);
+
+	        for (Coupon coupon : availableCoupons) {
+	            LocalDate validityDate = coupon.getValidity().toLocalDate();
+	            long daysLeft = ChronoUnit.DAYS.between(loginDate, validityDate);
+	            coupon.setDaysLeft((int) daysLeft);
+	        }
+	        
+	        model.addAttribute("coupons", availableCoupons);
 	        return "viewCart.jsp"; 
 	    }
 	 

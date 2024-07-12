@@ -183,6 +183,9 @@ a:hover {
 
         <label for="validity">Validity:</label>
         <input type="date" id="validity" name="validity" required><br><br>
+        
+        <label for="validity">Min Amount:</label>
+        <input type="number" id="minAmount" name="min_amount" required><br><br>
        
        <center> <input type="submit" value="Add Coupon"></center>
         <a href="ViewProductServlet">View the Coupons</a>

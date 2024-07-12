@@ -7,12 +7,29 @@ public class Coupon {
 	private String couponCode;
 	private int discount;
 	private Date validity;
-	public Coupon(int couponId, String couponCode, int discount, Date validity) {
+	private int daysLeft;
+	private int minAmount;
+	public int getMinAmount() {
+		return minAmount;
+	}
+	public void setMinAmount(int minAmount) {
+		this.minAmount = minAmount;
+	}
+	public int getDaysLeft() {
+		return daysLeft;
+	}
+	public void setDaysLeft(int daysLeft) {
+		this.daysLeft = daysLeft;
+	}
+	
+	public Coupon(int couponId, String couponCode, int discount, Date validity, int daysLeft, int minAmount) {
 		super();
 		this.couponId = couponId;
 		this.couponCode = couponCode;
 		this.discount = discount;
 		this.validity = validity;
+		this.daysLeft = daysLeft;
+		this.minAmount = minAmount;
 	}
 	public int getCouponId() {
 		return couponId;

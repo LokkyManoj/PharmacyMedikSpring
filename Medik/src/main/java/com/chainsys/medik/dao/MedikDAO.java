@@ -32,11 +32,12 @@ public interface MedikDAO {
 	 public boolean deleteCartItemsByCartId(int cartId);
 	 public boolean updateCartQuantity(int cartId,int quantity);
 	 public boolean placeOrder(Orders order);
-	 public boolean payment(Payment payment);
+	 public boolean payment(Payment payment,Coupon coupon);
 	 public boolean updateProductQuantity(int productId, int newQuantity);
 	 public boolean deleteCartItemsByUserId(int userId);
 	 public List<Products> getExpiredProducts();
 	 public boolean addCoupon(Coupon coupon);
 	 public List<Coupon> viewCoupons();
 	 public Coupon getCouponByCode(String couponCode);
+	 public List<Coupon> getAvailableCouponsForUser(int userId);
 }

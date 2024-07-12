@@ -154,19 +154,38 @@ public class MedikDAOImpl implements MedikDAO{
 	            return false;
 	        }
 	    }
-	@Override
-	public boolean payment(Payment payment) {
-		String sql = "INSERT INTO payment (payment_date, payment_method, amount, id, product_id) VALUES (?, ?, ?, ?, ?)";
-	    Object[] params = { 
-	        payment.getPaymentDate(), 
-	        payment.getPaymentMethod(), 
-	        payment.getAmount(), 
-	        payment.getUserId(), 
-	        payment.getProductId() 
-	    };
-	    int rowsAffected = jdbcTemplate.update(sql, params);
-	    return rowsAffected > 0;
-	}
+	 @Override
+	 public boolean payment(Payment payment, Coupon coupon) {
+	     String sql;
+	     Object[] params;
+	     if (coupon==null) {
+	         sql = "INSERT INTO payment (payment_date, payment_method, amount, id, product_id) VALUES (?, ?, ?, ?, ?)";
+	         params = new Object[] {
+	             payment.getPaymentDate(),
+	             payment.getPaymentMethod(),
+	             payment.getAmount(),
+	             payment.getUserId(),
+	             payment.getProductId()
+	         };
+	     } else {
+	         sql = "INSERT INTO payment (payment_date, payment_method, amount, id, product_id, coupon_id) VALUES (?, ?, ?, ?, ?, ?)";
+	         params = new Object[] {
+	             payment.getPaymentDate(),
+	             payment.getPaymentMethod(),
+	             payment.getAmount(),
+	             payment.getUserId(),
+	             payment.getProductId(),
+	             coupon.getCouponId()
+	         };
+	     }
+
+	     int rowsAffected = jdbcTemplate.update(sql, params);
+	     
+	    
+	     
+	     return rowsAffected > 0;
+	 }
+
 	@Override
 	public boolean updateProductQuantity(int productId, int newQuantity) {
 		 String query = "UPDATE pharmacy_admin SET product_quantity = ? WHERE product_id = ?";
@@ -186,8 +205,8 @@ public class MedikDAOImpl implements MedikDAO{
 	}
 	@Override
 	public boolean addCoupon(Coupon coupon) {
-		String sql = "INSERT INTO coupon (coupon_code,discount,validity) VALUES (?, ?, ?)";
-        Object[] params = { coupon.getCouponCode(),coupon.getDiscount(),coupon.getValidity()
+		String sql = "INSERT INTO coupon (coupon_code,discount,validity,min_amount) VALUES (?, ?, ?,?)";
+        Object[] params = { coupon.getCouponCode(),coupon.getDiscount(),coupon.getValidity(),coupon.getMinAmount()
            
         };
         int row = jdbcTemplate.update(sql, params);
@@ -204,6 +223,15 @@ public class MedikDAOImpl implements MedikDAO{
 		 String sql = "SELECT * FROM coupon WHERE coupon_code = ?";
 	        return jdbcTemplate.queryForObject(sql,new CouponMapper(),new Object[] { couponCode });
 	}
+	@Override
+	    public List<Coupon> getAvailableCouponsForUser(int userId) {
+		String sql = "SELECT * FROM coupon c " +
+	             "WHERE c.validity >= CURRENT_DATE " +  // Ensures coupon validity is not expired
+	             "AND NOT EXISTS (SELECT 1 FROM payment p WHERE p.coupon_id = c.coupon_id AND p.id = ?)";
+
+	        return jdbcTemplate.query(sql, new CouponMapper(),new Object[]{userId});
+	    }
+	
 
 }
 

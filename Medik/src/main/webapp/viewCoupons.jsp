@@ -25,6 +25,8 @@
             <td><%= coupon.getCouponCode() %></td>
             <td><%= coupon.getDiscount() %></td>
             <td><%= coupon.getValidity() %></td>
+                        <td><%= coupon.getMinAmount() %></td>
+            
             <td>
                 <form action="deleteUser" method="post" style="display:inline;">
                     <input type="hidden" name="id" value="<%= coupon.getCouponId() %>">

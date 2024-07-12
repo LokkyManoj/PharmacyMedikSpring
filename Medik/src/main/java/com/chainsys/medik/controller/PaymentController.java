@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.chainsys.medik.dao.MedikDAO;
+import com.chainsys.medik.model.Coupon;
 import com.chainsys.medik.model.Payment;
 import com.chainsys.medik.model.Products;
 
@@ -28,16 +29,21 @@ public class PaymentController {
                               @RequestParam("amount") double amount,
                               @RequestParam("user_id") int userId,
                               @RequestParam("product_id") int productId,
+                              @RequestParam("couponId") int couponId,
+
                               Model model, RedirectAttributes redirectAttributes) {
         Payment payment = new Payment();
+        Coupon coupon=new Coupon();
         payment.setPaymentDate(paymentDate);
         payment.setPaymentMethod(paymentMethod);
         payment.setAmount(amount);
         payment.setUserId(userId);
         payment.setProductId(productId);
+        coupon.setCouponId(couponId);
+        System.out.println("CouponID"+coupon.getCouponId());
 
         try {
-            boolean isPaymentSuccessful = medikDAO.payment(payment);
+            boolean isPaymentSuccessful = medikDAO.payment(payment,coupon);
             if (isPaymentSuccessful) {
                 redirectAttributes.addFlashAttribute("message", "Payment made successfully!");
                 return "pharmacyHome.jsp"; 
@@ -89,21 +95,24 @@ public class PaymentController {
 	                                @RequestParam("user_id") int userId,
 	                                @RequestParam("product_id") int productId,
 	                                @RequestParam("quantity") int quantity,
+	                                @RequestParam(name = "couponId", required = false) Integer couponId,
 	                                HttpSession session, Model model, RedirectAttributes redirectAttributes) {
-	        // Create and set payment details
 	        Payment payment = new Payment();
+	        Coupon coupon=null;
 	        payment.setPaymentDate(paymentDate);
 	        payment.setPaymentMethod(paymentMethod);
 	        payment.setAmount(amount);
 	        payment.setUserId(userId);
 	        payment.setProductId(productId);
-
+	        
+	        if (couponId != null && couponId > 0) {
+	            coupon = new Coupon();
+	            coupon.setCouponId(couponId);
+	        }	        
 	        try {
-	            // Insert payment
-	            boolean isPaymentSuccessful = medikDAO.payment(payment);
+	            boolean isPaymentSuccessful = medikDAO.payment(payment,coupon);
 	            if (isPaymentSuccessful) {
 	            	System.out.println("Payment succesfull");
-	                // Update product quantity
 	                Products product = medikDAO.findProductById(productId);
 	                if (product != null) {
 	                    int newQuantity = product.getProductQuantity() - quantity;
@@ -141,8 +150,9 @@ public class PaymentController {
 	    @GetMapping("/backtoHome")
 	    public String home(HttpSession session, Model model){
 	        int userId = (int) session.getAttribute("id");
-
-	        boolean deleteSuccess = medikDAO.deleteCartItemsByUserId(userId);
+			/*
+			 * session.removeAttribute("couponCode");
+			 */	        boolean deleteSuccess = medikDAO.deleteCartItemsByUserId(userId);
 			if (deleteSuccess) {
 				System.out.println("Deleted cart items");
 			    return "redirect:/pharmacyHome.jsp";
